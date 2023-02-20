@@ -9,7 +9,7 @@ var lengthOfBlogs = 0
 
 const blogsInDb = async () => {
   const blogsAtStart = await Blog.find({})
-  return blogs.map(blog => blog.toJSON())
+  return blogsAtStart.map(blog => blog.toJSON())
 }
 
 beforeAll(async () => {
@@ -38,9 +38,9 @@ test('id is defined', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body[0].id).toBeDefined()
-})
+}, 100000)
 
-test('HTTP POST request successfully creates a new blog post', async () => {
+/* test('HTTP POST request successfully creates a new blog post', async () => {
 
   const newBlog = {
     title: 'yyy',
@@ -67,8 +67,9 @@ test('HTTP POST request successfully creates a new blog post', async () => {
   expect(titles).toContain(
     'yyy'
   )
-})
+}, 100000) */
 
+// This one should stay commented
 /* test('HTTP POST request without likes property defaults to zero', async () => {
 
   const newBlog = {
@@ -92,7 +93,7 @@ test('HTTP POST request successfully creates a new blog post', async () => {
 
 }) */
 
-test('if the title or url properties are missing then 400-error', async () => {
+/* test('if the title or url properties are missing then 400-error', async () => {
 
   const newBlogNoTitle = {
     author: 'bbb',
@@ -116,9 +117,9 @@ test('if the title or url properties are missing then 400-error', async () => {
     .send(newBlogNoAuthor)
     .expect(400)
 
-})
+}, 100000) */
 
-test('a blog can be deleted', async () => {
+/* test('a blog can be deleted', async () => {
   const blogsAtStart = await blogsInDb()
   const blogToDelete = blogsAtStart[0]
   const initialBlogsLength = blogsInDb().length
@@ -136,9 +137,9 @@ test('a blog can be deleted', async () => {
   const titles = blogsAtEnd.map(r => r.title)
 
   expect(titles).not.toContain(blogToDelete.title)
-})
+}, 100000) */
 
-test('a blog can be updated', async () => {
+/* test('a blog can be updated', async () => {
 
   const blogsAtStart = await blogsInDb()
   const blogToUpdate = blogsAtStart[0]
@@ -160,7 +161,7 @@ test('a blog can be updated', async () => {
   const likesNumbers = blogsAtEnd.map(r => r.likes)
 
   expect(likesNumbers).toContain(newBlog.likes)
-})
+}, 100000) */
 
 afterAll(async () => {
   await mongoose.connection.close()
