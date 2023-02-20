@@ -20,6 +20,29 @@ beforeAll(async () => {
 
 })
 
+const initialBlogs = [
+  {
+    title: 'xxx',
+    author: 'bbb',
+    url: '...',
+    likes: 88
+  },
+  {
+    title: 'zzz',
+    author: 'iii',
+    url: '...',
+    likes: 55
+  },
+]
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+  let blogObject = new Blog(initialBlogs[0])
+  await blogObject.save()
+  blogObject = new Blog(initialBlogs[1])
+  await blogObject.save()
+})
+
 
 
 test('blogs are returned as json', async () => {
@@ -41,7 +64,7 @@ test('id is defined', async () => {
   expect(response.body[0].id).toBeDefined()
 }, 100000)
 
-/* test('HTTP POST request successfully creates a new blog post', async () => {
+test('HTTP POST request successfully creates a new blog post', async () => {
 
   const newBlog = {
     title: 'yyy',
@@ -68,10 +91,10 @@ test('id is defined', async () => {
   expect(titles).toContain(
     'yyy'
   )
-}, 100000) */
+}, 100000)
 
 // This one should stay commented
-test('HTTP POST request without likes property defaults to zero', async () => {
+test.only('HTTP POST request without likes property defaults to zero', async () => {
 
   const newBlog = {
     title: 'xxx',
@@ -92,9 +115,9 @@ test('HTTP POST request without likes property defaults to zero', async () => {
 
   expect(mostRecentBlog.likes).toBe(0)
 
-})
+}, 100000)
 
-test('if the title or url properties are missing then 400-error', async () => {
+test.only('if the title or url properties are missing then 400-error', async () => {
 
   const newBlogNoTitle = {
     author: 'bbb',
@@ -102,9 +125,9 @@ test('if the title or url properties are missing then 400-error', async () => {
     likes: 99
   }
 
-  const newBlogNoAuthor = {
+  const newBlogNoUrl = {
     title: 'aaa',
-    url: '...',
+    author: 'heyho',
     likes: 99
   }
 
@@ -115,15 +138,19 @@ test('if the title or url properties are missing then 400-error', async () => {
 
   await api
     .post('/api/blogs')
-    .send(newBlogNoAuthor)
+    .send(newBlogNoUrl)
     .expect(400)
+
+  const blogsAtEnd = await blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(initialBlogs.length)
 
 }, 100000)
 
-test('a blog can be deleted', async () => {
+test.only('a blog can be deleted', async () => {
   const blogsAtStart = await blogsInDb()
   const blogToDelete = blogsAtStart[0]
-  const initialBlogsLength = blogsInDb().length
+  // const initialBlogsLength = blogsInDb().length
 
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
@@ -132,13 +159,13 @@ test('a blog can be deleted', async () => {
   const blogsAtEnd = await blogsInDb()
 
   expect(blogsAtEnd).toHaveLength(
-    initialBlogsLength - 1
+    initialBlogs.length - 1
   )
 
   const titles = blogsAtEnd.map(r => r.title)
 
   expect(titles).not.toContain(blogToDelete.title)
-}, 100000) 
+}, 100000)
 
 test('a blog can be updated', async () => {
 
