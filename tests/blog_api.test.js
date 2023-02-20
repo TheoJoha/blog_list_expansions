@@ -147,7 +147,7 @@ test.only('if the title or url properties are missing then 400-error', async () 
 
 }, 100000)
 
-test.only('a blog can be deleted', async () => {
+test('a blog can be deleted', async () => {
   const blogsAtStart = await blogsInDb()
   const blogToDelete = blogsAtStart[0]
   // const initialBlogsLength = blogsInDb().length
