@@ -8,10 +8,10 @@ const Blog = require('../models/blog')
 
 var lengthOfBlogs = 0
 
-/* const blogsInDb = async () => {
+const blogsInDb = async () => {
   const blogsRetrieved = await Blog.find({})
   return blogsRetrieved.map(blog => blog.toJSON())
-} */
+}
 
 beforeAll(async () => {
   const response = await api.get('/api/blogs')
@@ -29,17 +29,17 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 }, 100000)
 
-/* test('the number of blog post is correct', async () => {
+test('the number of blog post is correct', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body).toHaveLength(lengthOfBlogs)
-}, 100000) */
+}, 100000)
 
-/* test('id is defined', async () => {
+test('id is defined', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body[0].id).toBeDefined()
-}, 100000) */
+}, 100000)
 
 /* test('HTTP POST request successfully creates a new blog post', async () => {
 
@@ -71,7 +71,7 @@ test('blogs are returned as json', async () => {
 }, 100000) */
 
 // This one should stay commented
-/* test('HTTP POST request without likes property defaults to zero', async () => {
+test('HTTP POST request without likes property defaults to zero', async () => {
 
   const newBlog = {
     title: 'xxx',
@@ -92,9 +92,9 @@ test('blogs are returned as json', async () => {
 
   expect(mostRecentBlog.likes).toBe(0)
 
-}) */
+})
 
-/* test('if the title or url properties are missing then 400-error', async () => {
+test('if the title or url properties are missing then 400-error', async () => {
 
   const newBlogNoTitle = {
     author: 'bbb',
@@ -118,9 +118,9 @@ test('blogs are returned as json', async () => {
     .send(newBlogNoAuthor)
     .expect(400)
 
-}, 100000) */
+}, 100000)
 
-/* test('a blog can be deleted', async () => {
+test('a blog can be deleted', async () => {
   const blogsAtStart = await blogsInDb()
   const blogToDelete = blogsAtStart[0]
   const initialBlogsLength = blogsInDb().length
@@ -138,9 +138,9 @@ test('blogs are returned as json', async () => {
   const titles = blogsAtEnd.map(r => r.title)
 
   expect(titles).not.toContain(blogToDelete.title)
-}, 100000) */
+}, 100000) 
 
-/* test('a blog can be updated', async () => {
+test('a blog can be updated', async () => {
 
   const blogsAtStart = await blogsInDb()
   const blogToUpdate = blogsAtStart[0]
@@ -162,7 +162,7 @@ test('blogs are returned as json', async () => {
   const likesNumbers = blogsAtEnd.map(r => r.likes)
 
   expect(likesNumbers).toContain(newBlog.likes)
-}, 100000) */
+}, 100000)
 
 afterAll(async () => {
   await mongoose.connection.close()
