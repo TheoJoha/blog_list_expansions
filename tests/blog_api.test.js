@@ -1,15 +1,16 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
+const mongoose = require('mongoose')
 const app = require('../app')
+const api = supertest(app)
+
 const Blog = require('../models/blog')
 
-const api = supertest(app)
 
 var lengthOfBlogs = 0
 
 const blogsInDb = async () => {
-  const blogsAtStart = await Blog.find({})
-  return blogsAtStart.map(blog => blog.toJSON())
+  const blogsRetrieved = await Blog.find({})
+  return blogsRetrieved.map(blog => blog.toJSON())
 }
 
 beforeAll(async () => {
