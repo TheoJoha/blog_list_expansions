@@ -8,10 +8,10 @@ const Blog = require('../models/blog')
 
 var lengthOfBlogs = 0
 
-const blogsInDb = async () => {
+/* const blogsInDb = async () => {
   const blogsRetrieved = await Blog.find({})
   return blogsRetrieved.map(blog => blog.toJSON())
-}
+} */
 
 beforeAll(async () => {
   const response = await api.get('/api/blogs')
