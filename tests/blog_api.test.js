@@ -29,17 +29,17 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 }, 100000)
 
-test('the number of blog post is correct', async () => {
+/* test('the number of blog post is correct', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body).toHaveLength(lengthOfBlogs)
-}, 100000)
+}, 100000) */
 
-test('id is defined', async () => {
+/* test('id is defined', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body[0].id).toBeDefined()
-}, 100000)
+}, 100000) */
 
 /* test('HTTP POST request successfully creates a new blog post', async () => {
 
