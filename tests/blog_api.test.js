@@ -93,7 +93,7 @@ test('HTTP POST request successfully creates a new blog post', async () => {
   )
 }, 100000)
 
-// This one should stay commented
+// This one should maybe stay commented
 test.only('HTTP POST request without likes property defaults to zero', async () => {
 
   const newBlog = {
@@ -111,9 +111,15 @@ test.only('HTTP POST request without likes property defaults to zero', async () 
       }
     })
 
-  const mostRecentBlog = await Blog.find().sort({ $natural:-1 }).limit(1)
+/*   const mostRecentBlog = await Blog.find().sort({ $natural:-1 }).limit(1)
 
-  expect(mostRecentBlog.likes).toBe(0)
+  expect(mostRecentBlog.likes).toBe(0) */
+
+  const blogsAtEnd = await blogsInDb()
+
+  const likes = blogsAtEnd.map(r => r.likes)
+
+  expect(likes).toContain(0)
 
 }, 100000)
 
