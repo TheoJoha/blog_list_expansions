@@ -94,7 +94,7 @@ test('HTTP POST request successfully creates a new blog post', async () => {
 }, 100000)
 
 // This one should maybe stay commented
-test.only('HTTP POST request without likes property defaults to zero', async () => {
+test('HTTP POST request without likes property defaults to zero', async () => {
 
   const newBlog = {
     title: 'xxx',
@@ -123,7 +123,7 @@ test.only('HTTP POST request without likes property defaults to zero', async () 
 
 }, 100000)
 
-test.only('if the title or url properties are missing then 400-error', async () => {
+test('if the title or url properties are missing then 400-error', async () => {
 
   const newBlogNoTitle = {
     author: 'bbb',
