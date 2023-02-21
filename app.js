@@ -7,6 +7,8 @@ const blogsRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const usersRouter = require('./controllers/users')
+
 
 mongoose.set('strictQuery', false)
 
@@ -24,6 +26,7 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false })) // added this
+app.use('/api/users', usersRouter)
 
 app.use(middleware.requestLogger)
 

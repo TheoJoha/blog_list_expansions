@@ -2,6 +2,8 @@ const supertest = require('supertest')
 const mongoose = require('mongoose')
 const app = require('../app')
 const api = supertest(app)
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 
 const Blog = require('../models/blog')
 
@@ -11,6 +13,11 @@ var lengthOfBlogs = 0
 const blogsInDb = async () => {
   const blogsRetrieved = await Blog.find({})
   return blogsRetrieved.map(blog => blog.toJSON())
+}
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
 }
 
 beforeAll(async () => {
@@ -111,7 +118,7 @@ test('HTTP POST request without likes property defaults to zero', async () => {
       }
     })
 
-/*   const mostRecentBlog = await Blog.find().sort({ $natural:-1 }).limit(1)
+  /*   const mostRecentBlog = await Blog.find().sort({ $natural:-1 }).limit(1)
 
   expect(mostRecentBlog.likes).toBe(0) */
 
@@ -182,7 +189,7 @@ test('a blog can be updated', async () => {
     title: 'xxx',
     author: 'bbb',
     url: '...',
-    likes: 777
+    likes: 444
   }
 
   await api
@@ -199,4 +206,37 @@ test('a blog can be updated', async () => {
 
 afterAll(async () => {
   await mongoose.connection.close()
+})
+
+describe('when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await usersInDb()
+
+    const newUser = {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
 })
